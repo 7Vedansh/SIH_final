@@ -1,18 +1,14 @@
 import React from 'react';
-import { TrendingUp, Users, FileCheck, MapPin, AlertCircle, CheckCircle, Activity } from 'lucide-react';
+import { TrendingUp, Users, FileCheck, MapPin, AlertCircle, CheckCircle } from 'lucide-react';
 import { StatCard } from './StatCard';
 import { ProgressChart } from './ProgressChart';
 import { RecentActivity } from './RecentActivity';
-import { useLanguage } from '../contexts/LanguageContext';
-import { AIConfidenceBadge } from './AIConfidenceBadge';
 
 interface DashboardProps {
   selectedState: string;
 }
 
 export function Dashboard({ selectedState }: DashboardProps) {
-  const { t } = useLanguage();
-
   const getStateStats = () => {
     if (selectedState === 'mp') {
       return {
@@ -46,22 +42,22 @@ export function Dashboard({ selectedState }: DashboardProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            {t('dashboardTitle')}
+            FRA Implementation Dashboard
           </h1>
           <p className="text-gray-600">
-            {t('dashboardSubtitle')}
+            Real-time monitoring of Forest Rights Act implementation across target states
           </p>
         </div>
-        <div className="flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-          <Activity className="w-4 h-4" />
-          {t('liveData')}
+        <div className="flex items-center space-x-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+          <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
+          Live Data
         </div>
       </div>
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
-          title={t('totalClaims')}
+          title="Total FRA Claims"
           value={stats.totalClaims.toLocaleString()}
           change="+12.5%"
           changeType="increase"
@@ -69,7 +65,7 @@ export function Dashboard({ selectedState }: DashboardProps) {
           color="blue"
         />
         <StatCard
-          title={t('approvedClaims')}
+          title="Approved Claims"
           value={stats.approvedClaims.toLocaleString()}
           change="+8.3%"
           changeType="increase"
@@ -77,7 +73,7 @@ export function Dashboard({ selectedState }: DashboardProps) {
           color="green"
         />
         <StatCard
-          title={t('pendingReview')}
+          title="Pending Review"
           value={stats.pendingClaims.toLocaleString()}
           change="-4.2%"
           changeType="decrease"
@@ -85,32 +81,13 @@ export function Dashboard({ selectedState }: DashboardProps) {
           color="orange"
         />
         <StatCard
-          title={t('villagesCovered')}
+          title="Villages Covered"
           value={stats.villages.toLocaleString()}
           change="+15.8%"
           changeType="increase"
           icon={MapPin}
           color="purple"
         />
-      </div>
-
-      {/* AI Confidence Overview */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">AI Verification Status</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <AIConfidenceBadge 
-            confidence={{ level: 'high', score: 94, verified: true }}
-            className="justify-center"
-          />
-          <AIConfidenceBadge 
-            confidence={{ level: 'medium', score: 78, verified: false }}
-            className="justify-center"
-          />
-          <AIConfidenceBadge 
-            confidence={{ level: 'low', score: 45, verified: false }}
-            className="justify-center"
-          />
-        </div>
       </div>
 
       {/* Progress Overview */}

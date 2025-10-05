@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { Brain, Target, TrendingUp, Users, MapPin, AlertTriangle, GitCompare } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+import { Brain, Target, TrendingUp, Users, MapPin, AlertTriangle } from 'lucide-react';
 
 interface DecisionSupportProps {
   selectedState: string;
-  onCompareSchemes: () => void;
 }
 
-export function DecisionSupport({ selectedState, onCompareSchemes }: DecisionSupportProps) {
-  const { t } = useLanguage();
+export function DecisionSupport({ selectedState }: DecisionSupportProps) {
   const [selectedScheme, setSelectedScheme] = useState('pm-kisan');
 
   const schemes = [
@@ -22,21 +19,12 @@ export function DecisionSupport({ selectedState, onCompareSchemes }: DecisionSup
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('dss')}</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Decision Support System</h1>
           <p className="text-gray-600">AI-powered recommendations for Central Sector Scheme implementation</p>
         </div>
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={onCompareSchemes}
-            className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-          >
-            <GitCompare className="w-4 h-4" />
-            <span>Compare Schemes</span>
-          </button>
-          <div className="flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+        <div className="flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
           <Brain className="w-4 h-4" />
           AI Analysis Active
-          </div>
         </div>
       </div>
 
