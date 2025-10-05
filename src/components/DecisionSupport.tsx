@@ -16,20 +16,20 @@ export function DecisionSupport({ selectedState }: DecisionSupportProps) {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Decision Support System</h1>
-          <p className="text-gray-600">AI-powered recommendations for Central Sector Scheme implementation</p>
+          <h1 className="text-3xl font-bold text-gray-900">Decision Support System</h1>
+          <p className="text-gray-600 mt-1">AI-powered recommendations for Central Sector Scheme implementation</p>
         </div>
-        <div className="flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-          <Brain className="w-4 h-4" />
-          AI Analysis Active
+        <div className="flex items-center gap-2 glass-card px-4 py-2 rounded-full text-sm font-semibold">
+          <Brain className="w-5 h-5 text-gov-blue-600" />
+          <span className="text-gov-blue-800">AI Analysis Active</span>
         </div>
       </div>
 
       {/* Scheme Selection */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="glass-card rounded-2xl p-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Central Sector Scheme</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {schemes.map(scheme => (

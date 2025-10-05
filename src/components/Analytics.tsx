@@ -9,24 +9,24 @@ export function Analytics({ selectedState }: AnalyticsProps) {
   const [dateRange, setDateRange] = useState('last-30-days');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Analytics & Reports</h1>
-          <p className="text-gray-600">Comprehensive insights into FRA implementation progress</p>
+          <h1 className="text-3xl font-bold text-gray-900">Analytics & Reports</h1>
+          <p className="text-gray-600 mt-1">Comprehensive insights into FRA implementation progress</p>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
           <select 
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+            className="input-field py-2 text-sm"
           >
             <option value="last-7-days">Last 7 days</option>
             <option value="last-30-days">Last 30 days</option>
             <option value="last-3-months">Last 3 months</option>
             <option value="last-year">Last year</option>
           </select>
-          <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+          <button className="btn-primary bg-gov-green-600 hover:bg-gov-green-700 flex items-center gap-2">
             <Download className="w-4 h-4" />
             <span>Export Report</span>
           </button>

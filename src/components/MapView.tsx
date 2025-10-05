@@ -18,25 +18,25 @@ export function MapView({ selectedState }: MapViewProps) {
   ];
 
   return (
-    <div className="h-full space-y-6">
+    <div className="h-full space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">FRA Atlas</h1>
-          <p className="text-gray-600">Interactive geospatial visualization of FRA implementation</p>
+          <h1 className="text-3xl font-bold text-gray-900">FRA Atlas</h1>
+          <p className="text-gray-600 mt-1">Interactive geospatial visualization of FRA implementation</p>
         </div>
-        <div className="flex items-center space-x-2">
-          <button className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+        <div className="flex items-center space-x-3">
+          <button className="btn-secondary flex items-center gap-2">
             <Download className="w-4 h-4" />
             <span>Export Map</span>
           </button>
-          <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+          <button className="btn-primary bg-gov-green-600 hover:bg-gov-green-700 flex items-center gap-2">
             <Maximize2 className="w-4 h-4" />
             <span>Full Screen</span>
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="glass-card rounded-2xl overflow-hidden">
         {/* Map Controls */}
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center space-x-4">

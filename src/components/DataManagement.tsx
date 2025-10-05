@@ -15,18 +15,18 @@ export function DataManagement({ selectedState }: DataManagementProps) {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Data Management</h1>
-          <p className="text-gray-600">Digitize, verify, and integrate FRA legacy records</p>
+          <h1 className="text-3xl font-bold text-gray-900">Data Management</h1>
+          <p className="text-gray-600 mt-1">Digitize, verify, and integrate FRA legacy records</p>
         </div>
-        <div className="flex items-center space-x-2">
-          <button className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+        <div className="flex items-center space-x-3">
+          <button className="btn-secondary flex items-center gap-2">
             <Download className="w-4 h-4" />
             <span>Export Data</span>
           </button>
-          <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+          <button className="btn-primary bg-gov-green-600 hover:bg-gov-green-700 flex items-center gap-2">
             <Upload className="w-4 h-4" />
             <span>Upload Documents</span>
           </button>
@@ -34,21 +34,21 @@ export function DataManagement({ selectedState }: DataManagementProps) {
       </div>
 
       {/* Tab Navigation */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8">
+      <div className="glass-card rounded-2xl p-2">
+        <nav className="flex space-x-2">
           {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 pb-4 border-b-2 font-medium text-sm ${
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
                   activeTab === tab.id
-                    ? 'border-green-500 text-green-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'bg-gov-green-600 text-white shadow-lg'
+                    : 'text-gray-600 hover:bg-white hover:shadow-md'
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-5 h-5" />
                 <span>{tab.label}</span>
               </button>
             );
