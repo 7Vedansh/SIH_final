@@ -13,6 +13,25 @@ export const translations = {
       login: "Login",
       language: "Language"
     },
+    sidebar: {
+      dashboard: "Dashboard",
+      fraAtlas: "FRA Atlas",
+      dataManagement: "Data Management",
+      decisionSupport: "Decision Support",
+      analytics: "Analytics"
+    },
+    dashboard: {
+      title: "FRA Implementation Dashboard",
+      subtitle: "Real-time monitoring of Forest Rights Act implementation across target states",
+      liveData: "Live Data",
+      totalClaims: "Total FRA Claims",
+      approvedClaims: "Approved Claims",
+      pendingReview: "Pending Review",
+      villagesCovered: "Villages Covered",
+      stateWiseProgress: "State-wise Progress",
+      recentActivities: "Recent Activities",
+      quickActions: "Quick Actions"
+    },
     metrics: {
       totalClaims: "Total Claims",
       approvedClaims: "Approved Claims",
@@ -54,6 +73,25 @@ export const translations = {
       help: "मदद",
       login: "लॉगिन",
       language: "भाषा"
+    },
+    sidebar: {
+      dashboard: "डैशबोर्ड",
+      fraAtlas: "FRA एटलस",
+      dataManagement: "डेटा प्रबंधन",
+      decisionSupport: "निर्णय समर्थन",
+      analytics: "विश्लेषण"
+    },
+    dashboard: {
+      title: "FRA कार्यान्वयन डैशबोर्ड",
+      subtitle: "लक्षित राज्यों में वन अधिकार अधिनियम के कार्यान्वयन की वास्तविक समय निगरानी",
+      liveData: "लाइव डेटा",
+      totalClaims: "कुल FRA दावे",
+      approvedClaims: "स्वीकृत दावे",
+      pendingReview: "समीक्षा लंबित",
+      villagesCovered: "गाँव कवर किए गए",
+      stateWiseProgress: "राज्य-वार प्रगति",
+      recentActivities: "हाल की गतिविधियाँ",
+      quickActions: "त्वरित क्रियाएं"
     },
     metrics: {
       totalClaims: "कुल दावे",
