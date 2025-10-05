@@ -1,3 +1,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+  
+  .glass-card-dark {
+    @apply bg-gray-900/80 backdrop-blur-lg border border-gray-700/20 shadow-xl;
+  }
+  
+  .btn-primary {
+    @apply px-6 py-3 bg-gov-blue-600 text-white rounded-lg font-medium 
+           hover:bg-gov-blue-700 transition-all duration-200 
+           hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 bg-white border-2 border-gov-blue-600 text-gov-blue-600 
+           rounded-lg font-medium hover:bg-gov-blue-50 transition-all duration-200;
+  }
+  
+  .nav-link {
+    @apply px-4 py-2 text-gray-700 hover:text-gov-blue-600 
+           transition-colors duration-200 font-medium;
+  }
+  
+  .badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg 
+           focus:border-gov-blue-500 focus:ring-4 focus:ring-gov-blue-100 
+           transition-all duration-200 outline-none;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-gov-blue-600 to-gov-green-600 bg-clip-text text-transparent;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
