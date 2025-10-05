@@ -11,21 +11,21 @@ interface StatCardProps {
 }
 
 const colorClasses = {
-  blue: 'bg-blue-100 text-blue-600',
-  green: 'bg-green-100 text-green-600',
-  orange: 'bg-orange-100 text-orange-600',
-  purple: 'bg-purple-100 text-purple-600',
+  blue: 'bg-gradient-to-br from-gov-blue-500 to-gov-blue-600',
+  green: 'bg-gradient-to-br from-gov-green-500 to-gov-green-600',
+  orange: 'bg-gradient-to-br from-gov-saffron-500 to-gov-saffron-600',
+  purple: 'bg-gradient-to-br from-purple-500 to-purple-600',
 };
 
 export function StatCard({ title, value, change, changeType, icon: Icon, color }: StatCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
+    <div className="glass-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-slide-up">
       <div className="flex items-center justify-between mb-4">
-        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${colorClasses[color]}`}>
-          <Icon className="w-6 h-6" />
+        <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${colorClasses[color]} shadow-lg`}>
+          <Icon className="w-7 h-7 text-white" />
         </div>
-        <div className={`flex items-center space-x-1 text-sm font-medium ${
-          changeType === 'increase' ? 'text-green-600' : 'text-red-600'
+        <div className={`flex items-center space-x-1 text-sm font-semibold px-3 py-1 rounded-full ${
+          changeType === 'increase' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
         }`}>
           {changeType === 'increase' ? (
             <TrendingUp className="w-4 h-4" />
@@ -36,8 +36,8 @@ export function StatCard({ title, value, change, changeType, icon: Icon, color }
         </div>
       </div>
       <div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
-        <p className="text-gray-600 text-sm">{title}</p>
+        <h3 className="text-3xl font-bold text-gray-900 mb-2 animate-counter">{value}</h3>
+        <p className="text-gray-600 text-sm font-medium">{title}</p>
       </div>
     </div>
   );

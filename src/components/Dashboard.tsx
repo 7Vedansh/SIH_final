@@ -38,19 +38,19 @@ export function Dashboard({ selectedState }: DashboardProps) {
   const approvalRate = Math.round((stats.approvedClaims / stats.totalClaims) * 100);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900">
             FRA Implementation Dashboard
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 mt-1">
             Real-time monitoring of Forest Rights Act implementation across target states
           </p>
         </div>
-        <div className="flex items-center space-x-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-          <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
-          Live Data
+        <div className="flex items-center space-x-2 glass-card px-4 py-2 rounded-full text-sm font-semibold border-gov-green-500">
+          <div className="w-2 h-2 bg-gov-green-600 rounded-full animate-pulse"></div>
+          <span className="text-gov-green-800">Live Data</span>
         </div>
       </div>
 
@@ -92,15 +92,15 @@ export function Dashboard({ selectedState }: DashboardProps) {
 
       {/* Progress Overview */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="glass-card rounded-2xl p-8">
+          <h3 className="text-xl font-bold text-gray-900 mb-6">
             State-wise Progress
           </h3>
           <ProgressChart selectedState={selectedState} />
         </div>
         
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="glass-card rounded-2xl p-8">
+          <h3 className="text-xl font-bold text-gray-900 mb-6">
             Recent Activities
           </h3>
           <RecentActivity />
@@ -108,36 +108,36 @@ export function Dashboard({ selectedState }: DashboardProps) {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+      <div className="glass-card rounded-2xl p-8">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <button className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-blue-600" />
+          <button className="flex items-center space-x-4 p-5 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-200">
+            <div className="w-12 h-12 bg-gradient-to-br from-gov-blue-500 to-gov-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+              <MapPin className="w-6 h-6 text-white" />
             </div>
             <div className="text-left">
-              <h4 className="font-medium text-gray-900">View FRA Atlas</h4>
-              <p className="text-sm text-gray-600">Interactive map visualization</p>
+              <h4 className="font-semibold text-gray-900">View FRA Atlas</h4>
+              <p className="text-sm text-gray-600">Interactive map</p>
             </div>
           </button>
           
-          <button className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <Users className="w-5 h-5 text-green-600" />
+          <button className="flex items-center space-x-4 p-5 bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-200">
+            <div className="w-12 h-12 bg-gradient-to-br from-gov-green-500 to-gov-green-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Users className="w-6 h-6 text-white" />
             </div>
             <div className="text-left">
-              <h4 className="font-medium text-gray-900">Beneficiary Search</h4>
+              <h4 className="font-semibold text-gray-900">Beneficiary Search</h4>
               <p className="text-sm text-gray-600">Find patta holders</p>
             </div>
           </button>
           
-          <button className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-purple-600" />
+          <button className="flex items-center space-x-4 p-5 bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-200">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+              <TrendingUp className="w-6 h-6 text-white" />
             </div>
             <div className="text-left">
-              <h4 className="font-medium text-gray-900">Generate Report</h4>
-              <p className="text-sm text-gray-600">Export analytics data</p>
+              <h4 className="font-semibold text-gray-900">Generate Report</h4>
+              <p className="text-sm text-gray-600">Export analytics</p>
             </div>
           </button>
         </div>
