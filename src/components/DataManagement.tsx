@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
-import { Upload, FileText, Download, Search, Filter, CheckCircle, AlertCircle } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Upload, FileText, Download, Search, Filter, CheckCircle, AlertCircle, X, Loader } from 'lucide-react';
 
 interface DataManagementProps {
   selectedState: string;
 }
+
+interface UploadedFile {
+  filename: string;
+  originalName: string;
+  file_url: string;
+  size: number;
+  mimetype: string;
+  status?: string;
+  progress?: number;
+}
+
+const API_BASE_URL = 'http://localhost:5000';
 
 export function DataManagement({ selectedState }: DataManagementProps) {
   const [activeTab, setActiveTab] = useState('digitization');
@@ -25,10 +37,6 @@ export function DataManagement({ selectedState }: DataManagementProps) {
           <button className="btn-secondary flex items-center gap-2">
             <Download className="w-4 h-4" />
             <span>Export Data</span>
-          </button>
-          <button className="btn-primary bg-gov-green-600 hover:bg-gov-green-700 flex items-center gap-2">
-            <Upload className="w-4 h-4" />
-            <span>Upload Documents</span>
           </button>
         </div>
       </div>
@@ -59,71 +67,6 @@ export function DataManagement({ selectedState }: DataManagementProps) {
       {activeTab === 'digitization' && <DigitizationPanel />}
       {activeTab === 'verification' && <VerificationPanel />}
       {activeTab === 'integration' && <IntegrationPanel />}
-    </div>
-  );
-}
-
-function DigitizationPanel() {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">AI-Powered Document Processing</h3>
-        
-        <div className="space-y-4">
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-            <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h4 className="text-lg font-medium text-gray-900 mb-2">Upload FRA Documents</h4>
-            <p className="text-gray-600 mb-4">
-              Drop scanned FRA claims, verification documents, and legacy records here
-            </p>
-            <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-              Select Files
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div className="bg-blue-50 p-3 rounded-lg">
-              <div className="font-medium text-blue-900">OCR Processing</div>
-              <div className="text-blue-700">Extract text from scanned documents</div>
-            </div>
-            <div className="bg-green-50 p-3 rounded-lg">
-              <div className="font-medium text-green-900">NER Analysis</div>
-              <div className="text-green-700">Identify names, places, coordinates</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Processing Status</h3>
-        
-        <div className="space-y-4">
-          {[
-            { name: 'Balaghat_IFR_Claims.pdf', status: 'completed', progress: 100 },
-            { name: 'Dindori_CFR_Applications.pdf', status: 'processing', progress: 65 },
-            { name: 'Mandla_Legacy_Records.pdf', status: 'queued', progress: 0 },
-          ].map((file, index) => (
-            <div key={index} className="border border-gray-200 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-medium text-gray-900">{file.name}</span>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  file.status === 'completed' ? 'bg-green-100 text-green-800' :
-                  file.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
-                  {file.status}
-                </span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-green-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${file.progress}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
@@ -211,6 +154,17 @@ function VerificationPanel() {
 }
 
 function IntegrationPanel() {
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    // Simulate sync operation
+    setTimeout(() => {
+      setSyncing(false);
+      alert('Sync completed successfully!');
+    }, 2000);
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -261,9 +215,231 @@ function IntegrationPanel() {
             </div>
           </div>
 
-          <button className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-            Sync Now
+          <button 
+            onClick={handleSync}
+            disabled={syncing}
+            className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {syncing && <Loader className="w-4 h-4 animate-spin" />}
+            {syncing ? 'Syncing...' : 'Sync Now'}
           </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DigitizationPanel() {
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      await handleFiles(e.dataTransfer.files);
+    }
+  };
+
+  const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      await handleFiles(e.target.files);
+    }
+  };
+
+  const handleFiles = async (files: FileList) => {
+    setIsUploading(true);
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      // Add file to list with 'uploading' status
+      const newFile: UploadedFile = {
+        filename: file.name,
+        originalName: file.name,
+        file_url: '',
+        size: file.size,
+        mimetype: file.type,
+        status: 'uploading',
+        progress: 0
+      };
+      
+      setUploadedFiles(prev => [...prev, newFile]);
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch(`${API_BASE_URL}/api/upload`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          // Update file with success status
+          setUploadedFiles(prev => 
+            prev.map(f => 
+              f.originalName === file.name && f.status === 'uploading'
+                ? { 
+                    ...result.data, 
+                    status: 'completed', 
+                    progress: 100 
+                  }
+                : f
+            )
+          );
+        } else {
+          throw new Error(result.error || 'Upload failed');
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        // Update file with error status
+        setUploadedFiles(prev => 
+          prev.map(f => 
+            f.originalName === file.name && f.status === 'uploading'
+              ? { ...f, status: 'error', progress: 0 }
+              : f
+          )
+        );
+      }
+    }
+
+    setIsUploading(false);
+  };
+
+  const removeFile = (filename: string) => {
+    setUploadedFiles(prev => prev.filter(f => f.filename !== filename));
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">AI-Powered Document Processing</h3>
+        
+        <div className="space-y-4">
+          <div 
+            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+              dragActive 
+                ? 'border-green-500 bg-green-50' 
+                : 'border-gray-300 bg-white'
+            }`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              onChange={handleFileInput}
+              className="hidden"
+              accept=".pdf,.jpg,.jpeg,.png,.tiff,.doc,.docx"
+            />
+            
+            <Upload className={`w-12 h-12 mx-auto mb-4 ${dragActive ? 'text-green-600' : 'text-gray-400'}`} />
+            <h4 className="text-lg font-medium text-gray-900 mb-2">Upload FRA Documents</h4>
+            <p className="text-gray-600 mb-4">
+              Drop scanned FRA claims, verification documents, and legacy records here
+            </p>
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
+            >
+              {isUploading && <Loader className="w-4 h-4 animate-spin" />}
+              {isUploading ? 'Uploading...' : 'Select Files'}
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <div className="font-medium text-blue-900">OCR Processing</div>
+              <div className="text-blue-700">Extract text from scanned documents</div>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg">
+              <div className="font-medium text-green-900">NER Analysis</div>
+              <div className="text-green-700">Identify names, places, coordinates</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Processing Status</h3>
+        
+        <div className="space-y-4 max-h-96 overflow-y-auto">
+          {uploadedFiles.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
+              <p>No files uploaded yet</p>
+            </div>
+          ) : (
+            uploadedFiles.map((file, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-medium text-gray-900 text-sm truncate flex-1">
+                    {file.originalName}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      file.status === 'completed' ? 'bg-green-100 text-green-800' :
+                      file.status === 'uploading' ? 'bg-blue-100 text-blue-800' :
+                      file.status === 'error' ? 'bg-red-100 text-red-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {file.status || 'queued'}
+                    </span>
+                    {file.status === 'completed' && (
+                      <button 
+                        onClick={() => removeFile(file.filename)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      file.status === 'error' ? 'bg-red-600' : 'bg-green-600'
+                    }`}
+                    style={{ width: `${file.progress || 0}%` }}
+                  />
+                </div>
+                {file.status === 'completed' && file.file_url && (
+                  <a 
+                    href={file.file_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-600 hover:text-blue-700 mt-2 inline-block"
+                  >
+                    View uploaded file →
+                  </a>
+                )}
+                {file.status === 'error' && (
+                  <p className="text-xs text-red-600 mt-2">Upload failed. Please try again.</p>
+                )}
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
