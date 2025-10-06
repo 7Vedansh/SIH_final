@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:5173',         // Vite / React dev
   'http://127.0.0.1:5173',         // Another localhost form
-  'http://192.168.1.13:5000'       // Your LAN IP frontend
+  'http://192.168.1.4:5173'        // reLAN IP frontend (UPDATED)
 ];
 
 // CORS middleware
@@ -81,7 +81,7 @@ app.listen(PORT, () => {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(`📡 Server running on: http://localhost:${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`☁️  Backblaze B2 Bucket: ${process.env.B2_BUCKET || 'Not set'}`);
+  console.log(`☁️  Backblaze B2 Bucket: ${process.env.BACKBLAZE_BUCKET_NAME || 'Not set'}`);
   console.log(`🔗 CORS Allowed Origins: ${allowedOrigins.join(', ')}`);
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 });

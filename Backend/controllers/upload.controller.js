@@ -29,8 +29,7 @@ const uploadFile = async (req, res) => {
     // Upload to Backblaze B2
     const result = await s3Client.upload(uploadParams).promise();
 
-    const fileUrl = `${process.env.B2_ENDPOINT}/${bucketName}/${safeFileName}`;
-
+    const fileUrl = `${process.env.BACKBLAZE_ENDPOINT}/${bucketName}/${safeFileName}`;
     const responseData = {
       success: true,
       message: 'File uploaded successfully',
@@ -51,6 +50,7 @@ const uploadFile = async (req, res) => {
 
 const uploadMultipleFiles = async (req, res) => {
   try {
+     console.log('🔍 Upload Debug - bucketName:', bucketName);
     if (!req.files || req.files.length === 0) {
       return errorResponse(res, 'No files uploaded', 400);
     }
@@ -70,8 +70,7 @@ const uploadMultipleFiles = async (req, res) => {
       };
 
       const result = await s3Client.upload(uploadParams).promise();
-      const fileUrl = `${process.env.B2_ENDPOINT}/${bucketName}/${safeFileName}`;
-
+      const fileUrl = `${process.env.BACKBLAZE_ENDPOINT}/${bucketName}/${safeFileName}`;
       return {
         filename: safeFileName,
         originalName: file.originalname,
