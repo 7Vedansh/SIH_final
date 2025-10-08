@@ -4,6 +4,7 @@ import {
   TrendingUp, Award, MapPin, Workflow, Database, CheckCircle, Languages
 } from 'lucide-react';
 import { translations, Language } from '../constants/translations';
+import { AshokaEmblem } from './common/AshokaEmblem';
 
 interface LandingPageProps {
   onLaunch: () => void;
@@ -63,6 +64,24 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gov-blue-950 via-gov-blue-900 to-gov-blue-950 overflow-hidden">
+      {/* Fixed Language Toggle */}
+      <div className="fixed top-4 right-4 z-50">
+        <div className="language-toggle-prominent inline-flex items-center gap-3 bg-white/10 backdrop-blur-xl border-2 border-white/30 rounded-full px-6 py-3 hover:bg-white/20 transition-all duration-300 cursor-pointer shadow-xl"
+          onClick={toggleLanguage}>
+          <Languages className="w-6 h-6 text-gov-saffron-400" />
+          <button className="flex items-center gap-3 font-semibold text-lg">
+            <span className={`transition-all ${currentLang === 'en' ? 'text-white scale-110' : 'text-white/50 scale-90'}`}>
+              EN
+            </span>
+            <div className="w-px h-6 bg-white/30"></div>
+            <span className={`transition-all ${currentLang === 'hi' ? 'text-white scale-110' : 'text-white/50 scale-90'}`}>
+              हि
+            </span>
+          </button>
+          <Globe className="w-6 h-6 text-gov-green-400" />
+        </div>
+      </div>
+
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-forest-pattern animate-drift-slow"></div>
       </div>
@@ -86,6 +105,7 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-3">
+                  <AshokaEmblem className="w-6 h-6 text-gov-saffron-400" />
                   <Shield className="w-6 h-6 text-gov-saffron-400" />
                   <span className="text-white/90 text-sm font-medium">
                     {currentLang === 'en' ? 'Government of India' : 'भारत सरकार'}
@@ -94,12 +114,6 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
                 <div className="h-4 w-px bg-white/20"></div>
                 <span className="text-white/70 text-sm">
                   {currentT.partners.mota}
-                </span>
-              </div>
-              <div className="flex items-center gap-3 bg-gov-saffron-500/20 px-4 py-1 rounded-full border border-gov-saffron-500/30">
-                <Award className="w-4 h-4 text-gov-saffron-400" />
-                <span className="text-white/90 text-sm font-semibold">
-                  {currentLang === 'en' ? 'SIH 2025 Innovation' : 'SIH 2025 नवाचार'}
                 </span>
               </div>
             </div>
@@ -157,26 +171,9 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
               </div>
 
               <div className="portal-name-section mb-8 opacity-0 animate-fade-in-up animation-delay-400">
-                <h1 className="portal-name-hero text-7xl md:text-8xl lg:text-9xl font-black mb-4 leading-none">
-                  <span className="portal-name-gradient inline-block animate-glow-text">
-                    {currentT.portalName}
-                  </span>
+                <h1 className="portal-name-hero text-7xl md:text-8xl lg:text-9xl font-black mb-4 leading-none text-white">
+                  {currentT.portalName}
                 </h1>
-
-                <div className="language-toggle-prominent inline-flex items-center gap-3 bg-white/10 backdrop-blur-xl border-2 border-white/30 rounded-full px-6 py-3 mb-6 hover:bg-white/20 transition-all duration-300 cursor-pointer shadow-xl"
-                  onClick={toggleLanguage}>
-                  <Languages className="w-6 h-6 text-gov-saffron-400" />
-                  <button className="flex items-center gap-3 font-semibold text-lg">
-                    <span className={`transition-all ${currentLang === 'en' ? 'text-white scale-110' : 'text-white/50 scale-90'}`}>
-                      EN
-                    </span>
-                    <div className="w-px h-6 bg-white/30"></div>
-                    <span className={`transition-all ${currentLang === 'hi' ? 'text-white scale-110' : 'text-white/50 scale-90'}`}>
-                      हि
-                    </span>
-                  </button>
-                  <Globe className="w-6 h-6 text-gov-green-400" />
-                </div>
 
                 <p className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gov-green-400 via-white to-gov-saffron-400 mb-6 animate-shimmer">
                   {currentT.portalTagline}
@@ -355,7 +352,10 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
             <p className="text-blue-200 mb-8">{currentT.partners.subtitle}</p>
             <div className="flex flex-wrap justify-center items-center gap-8 mt-8">
               <div className="partner-badge group">
-                <Shield className="w-6 h-6 text-gov-saffron-400 mb-2 mx-auto group-hover:scale-110 transition-transform" />
+                <div className="flex items-center gap-2 mb-2 mx-auto">
+                  <AshokaEmblem className="w-6 h-6 text-gov-saffron-400 group-hover:scale-110 transition-transform" />
+                  <Shield className="w-6 h-6 text-gov-saffron-400 group-hover:scale-110 transition-transform" />
+                </div>
                 <div className="text-white font-semibold">{currentT.partners.mota}</div>
               </div>
               <div className="w-px h-12 bg-white/20"></div>
