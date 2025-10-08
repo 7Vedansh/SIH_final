@@ -109,6 +109,66 @@
   .partner-badge {
     @apply transition-all duration-300 hover:scale-105 cursor-default;
   }
+
+  .portal-name-section {
+    position: relative;
+    padding: 2rem 0;
+  }
+
+  .portal-name-hero {
+    position: relative;
+    letter-spacing: -0.02em;
+    text-shadow:
+      0 0 40px rgba(249, 115, 22, 0.3),
+      0 0 80px rgba(34, 197, 94, 0.3),
+      0 10px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .portal-name-gradient {
+    background: linear-gradient(
+      135deg,
+      #f97316 0%,
+      #ffffff 25%,
+      #22c55e 50%,
+      #ffffff 75%,
+      #f97316 100%
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 8s ease infinite, text-glow-pulse 3s ease-in-out infinite;
+    position: relative;
+  }
+
+  .portal-name-gradient::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #f97316, #ffffff, #22c55e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: blur(20px);
+    opacity: 0.5;
+  }
+
+  .language-toggle-prominent {
+    backdrop-filter: blur(20px);
+    box-shadow:
+      0 4px 30px rgba(249, 115, 22, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+    animation: float-gentle 4s ease-in-out infinite;
+  }
+
+  .language-toggle-prominent:hover {
+    box-shadow:
+      0 8px 40px rgba(249, 115, 22, 0.4),
+      0 0 0 2px rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
 }
 
 @layer utilities {
@@ -150,6 +210,15 @@
 
   .animate-progress {
     animation: progress 2s ease-out forwards;
+  }
+
+  .animate-glow-text {
+    animation: glow-text 4s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
   }
 
   .animation-delay-100 {
@@ -337,6 +406,57 @@
   }
   90% {
     opacity: 0.3;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes text-glow-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 40px rgba(249, 115, 22, 0.3),
+      0 0 80px rgba(34, 197, 94, 0.3),
+      0 10px 60px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    text-shadow:
+      0 0 60px rgba(249, 115, 22, 0.5),
+      0 0 120px rgba(34, 197, 94, 0.5),
+      0 10px 80px rgba(0, 0, 0, 0.7);
+  }
+}
+
+@keyframes glow-text {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 20px rgba(249, 115, 22, 0.5));
+  }
+  50% {
+    filter: brightness(1.2) drop-shadow(0 0 40px rgba(34, 197, 94, 0.6));
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
   }
 }
 

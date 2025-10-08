@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Map, Shield, FileCheck, Users, Globe, ChevronRight,
-  TrendingUp, Award, MapPin, Workflow, Database, CheckCircle
+  TrendingUp, Award, MapPin, Workflow, Database, CheckCircle, Languages
 } from 'lucide-react';
 import { translations, Language } from '../constants/translations';
 
@@ -15,6 +15,7 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
   const [scrollY, setScrollY] = useState(0);
   const [counters, setCounters] = useState({ claims: 0, approved: 0, villages: 0, states: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const [currentLang, setCurrentLang] = useState<Language>(language);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -48,9 +49,20 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
     return () => clearInterval(timer);
   }, [isVisible]);
 
+  const toggleLanguage = () => {
+    const newLang = currentLang === 'en' ? 'hi' : 'en';
+    setCurrentLang(newLang);
+    window.dispatchEvent(new CustomEvent('languageChange', { detail: newLang }));
+  };
+
+  useEffect(() => {
+    setCurrentLang(language);
+  }, [language]);
+
+  const currentT = translations[currentLang];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gov-blue-950 via-gov-blue-900 to-gov-blue-950 overflow-hidden">
-      {/* Animated Background Layers */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-forest-pattern animate-drift-slow"></div>
       </div>
@@ -69,37 +81,40 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
       </div>
 
       <div className="relative z-10">
-        {/* Government Header Badge */}
         <div className="bg-white/5 backdrop-blur-md border-b border-white/10">
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-3">
                   <Shield className="w-6 h-6 text-gov-saffron-400" />
-                  <span className="text-white/90 text-sm font-medium">Government of India</span>
+                  <span className="text-white/90 text-sm font-medium">
+                    {currentLang === 'en' ? 'Government of India' : 'भारत सरकार'}
+                  </span>
                 </div>
                 <div className="h-4 w-px bg-white/20"></div>
-                <span className="text-white/70 text-sm">Ministry of Tribal Affairs</span>
+                <span className="text-white/70 text-sm">
+                  {currentT.partners.mota}
+                </span>
               </div>
               <div className="flex items-center gap-3 bg-gov-saffron-500/20 px-4 py-1 rounded-full border border-gov-saffron-500/30">
                 <Award className="w-4 h-4 text-gov-saffron-400" />
-                <span className="text-white/90 text-sm font-semibold">SIH 2025 Innovation</span>
+                <span className="text-white/90 text-sm font-semibold">
+                  {currentLang === 'en' ? 'SIH 2025 Innovation' : 'SIH 2025 नवाचार'}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Hero Section with Advanced Animation */}
-        <section className="container mx-auto px-4 pt-20 pb-32 relative">
+        <section className="container mx-auto px-4 pt-12 pb-32 relative">
           <div className="max-w-6xl mx-auto">
-            {/* Animated Journey Visualization */}
             <div className="mb-12 opacity-0 animate-fade-in-up">
               <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
                 <div className="transformation-stage group">
                   <div className="stage-icon bg-white/10 hover:bg-white/20">
                     <FileCheck className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-white/70 text-xs mt-2">Paper</span>
+                  <span className="text-white/70 text-xs mt-2">{currentT.journey.paper}</span>
                 </div>
                 <div className="arrow-flow">
                   <ChevronRight className="w-5 h-5 text-gov-green-400 animate-pulse" />
@@ -108,7 +123,7 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
                   <div className="stage-icon bg-white/10 hover:bg-white/20">
                     <Database className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-white/70 text-xs mt-2">Digitize</span>
+                  <span className="text-white/70 text-xs mt-2">{currentT.journey.digitize}</span>
                 </div>
                 <div className="arrow-flow">
                   <ChevronRight className="w-5 h-5 text-gov-green-400 animate-pulse animation-delay-200" />
@@ -117,7 +132,7 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
                   <div className="stage-icon bg-white/10 hover:bg-white/20">
                     <Map className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-white/70 text-xs mt-2">Map</span>
+                  <span className="text-white/70 text-xs mt-2">{currentT.journey.map}</span>
                 </div>
                 <div className="arrow-flow">
                   <ChevronRight className="w-5 h-5 text-gov-green-400 animate-pulse animation-delay-300" />
@@ -126,15 +141,14 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
                   <div className="stage-icon bg-gov-green-500/30 hover:bg-gov-green-500/40 border-2 border-gov-green-400">
                     <CheckCircle className="w-6 h-6 text-gov-green-300" />
                   </div>
-                  <span className="text-white/90 text-xs mt-2 font-semibold">Rights</span>
+                  <span className="text-white/90 text-xs mt-2 font-semibold">{currentT.journey.rights}</span>
                 </div>
               </div>
             </div>
 
-            {/* Main Hero Content */}
-            <div className="text-center opacity-0 animate-fade-in-up animation-delay-400">
-              <div className="inline-block mb-8 relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-gov-saffron-500 to-gov-green-500 rounded-full blur-2xl opacity-30 animate-pulse-slow"></div>
+            <div className="text-center mb-16">
+              <div className="inline-block mb-6 relative opacity-0 animate-fade-in-up animation-delay-200">
+                <div className="absolute inset-0 bg-gradient-to-r from-gov-saffron-500 to-gov-green-500 rounded-full blur-3xl opacity-30 animate-pulse-slow"></div>
                 <div className="relative w-32 h-32 bg-gradient-to-br from-gov-saffron-500 via-white to-gov-green-500 rounded-full flex items-center justify-center animate-float shadow-2xl">
                   <div className="w-28 h-28 bg-gov-blue-900 rounded-full flex items-center justify-center">
                     <Map className="w-14 h-14 text-white animate-pulse" />
@@ -142,22 +156,39 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
                 </div>
               </div>
 
-              <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                <span className="inline-block opacity-0 animate-slide-in-right">India's</span>{' '}
-                <span className="inline-block opacity-0 animate-slide-in-right animation-delay-100 text-gov-green-400">Forest Rights</span>
-                <br />
-                <span className="inline-block opacity-0 animate-slide-in-left animation-delay-200">Digitized</span>
-                <span className="text-gov-saffron-400 inline-block opacity-0 animate-slide-in-left animation-delay-300">.</span>{' '}
-                <span className="inline-block opacity-0 animate-slide-in-right animation-delay-400">Delivered</span>
-                <span className="text-gov-green-400 inline-block opacity-0 animate-slide-in-right animation-delay-500">.</span>
-              </h1>
+              <div className="portal-name-section mb-8 opacity-0 animate-fade-in-up animation-delay-400">
+                <h1 className="portal-name-hero text-7xl md:text-8xl lg:text-9xl font-black mb-4 leading-none">
+                  <span className="portal-name-gradient inline-block animate-glow-text">
+                    {currentT.portalName}
+                  </span>
+                </h1>
+
+                <div className="language-toggle-prominent inline-flex items-center gap-3 bg-white/10 backdrop-blur-xl border-2 border-white/30 rounded-full px-6 py-3 mb-6 hover:bg-white/20 transition-all duration-300 cursor-pointer shadow-xl"
+                  onClick={toggleLanguage}>
+                  <Languages className="w-6 h-6 text-gov-saffron-400" />
+                  <button className="flex items-center gap-3 font-semibold text-lg">
+                    <span className={`transition-all ${currentLang === 'en' ? 'text-white scale-110' : 'text-white/50 scale-90'}`}>
+                      EN
+                    </span>
+                    <div className="w-px h-6 bg-white/30"></div>
+                    <span className={`transition-all ${currentLang === 'hi' ? 'text-white scale-110' : 'text-white/50 scale-90'}`}>
+                      हि
+                    </span>
+                  </button>
+                  <Globe className="w-6 h-6 text-gov-green-400" />
+                </div>
+
+                <p className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gov-green-400 via-white to-gov-saffron-400 mb-6 animate-shimmer">
+                  {currentT.portalTagline}
+                </p>
+              </div>
 
               <p className="text-xl md:text-2xl text-blue-100 mb-4 max-w-4xl mx-auto leading-relaxed opacity-0 animate-fade-in animation-delay-600">
-                AI-Powered Forest Rights GIS & Decision Support System
+                {currentT.hero.subtitle}
               </p>
 
               <p className="text-lg text-blue-200/80 mb-12 max-w-3xl mx-auto opacity-0 animate-fade-in animation-delay-700">
-                Transforming tribal empowerment through cutting-edge geospatial intelligence and automated governance
+                {currentT.hero.description}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center opacity-0 animate-fade-in-up animation-delay-800">
@@ -165,19 +196,18 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
                   onClick={onLaunch}
                   className="group relative btn-launch bg-gradient-to-r from-gov-saffron-500 to-gov-saffron-600 hover:from-gov-saffron-600 hover:to-gov-saffron-700 text-white flex items-center gap-3 text-lg px-10 py-5 rounded-xl font-semibold shadow-2xl hover:shadow-gov-saffron-500/50 transform hover:scale-105 transition-all duration-300"
                 >
-                  <span>Launch Van-Atmaa Portal</span>
+                  <span>{currentT.hero.launchButton}</span>
                   <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </button>
 
                 <button className="group btn-secondary-landing bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 flex items-center gap-3 text-lg px-10 py-5 rounded-xl font-semibold backdrop-blur-md transition-all duration-300">
-                  <span>Explore Features</span>
+                  <span>{currentT.hero.exploreButton}</span>
                   <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Floating Particles Effect */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="particle particle-1"></div>
             <div className="particle particle-2"></div>
@@ -186,14 +216,13 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
           </div>
         </section>
 
-        {/* Impact Metrics with Counter Animation */}
         <section className="container mx-auto px-4 py-20">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {[
               {
                 value: counters.claims,
                 suffix: 'K+',
-                label: 'Claims Digitized',
+                label: currentT.metrics.totalClaims,
                 icon: TrendingUp,
                 color: 'from-blue-500 to-blue-600',
                 gradient: 'from-blue-500/20 to-blue-600/20'
@@ -201,7 +230,7 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
               {
                 value: counters.approved,
                 suffix: 'K+',
-                label: 'Rights Approved',
+                label: currentT.metrics.approvedClaims,
                 icon: CheckCircle,
                 color: 'from-green-500 to-green-600',
                 gradient: 'from-green-500/20 to-green-600/20'
@@ -209,7 +238,7 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
               {
                 value: counters.villages,
                 suffix: 'K+',
-                label: 'Villages Covered',
+                label: currentT.metrics.villages,
                 icon: Users,
                 color: 'from-gov-saffron-500 to-gov-saffron-600',
                 gradient: 'from-gov-saffron-500/20 to-gov-saffron-600/20'
@@ -217,7 +246,7 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
               {
                 value: counters.states,
                 suffix: '+',
-                label: 'States Active',
+                label: currentT.metrics.states,
                 icon: MapPin,
                 color: 'from-purple-500 to-purple-600',
                 gradient: 'from-purple-500/20 to-purple-600/20'
@@ -245,43 +274,42 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
           </div>
         </section>
 
-        {/* Journey Roadmap */}
         <section className="container mx-auto px-4 py-24">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-bold text-center text-white mb-4 opacity-0 animate-fade-in-up" style={{ animationDelay: '1300ms' }}>
-              Digital Rights Journey
+              {currentT.roadmap.title}
             </h2>
             <p className="text-center text-blue-200 text-lg mb-16 opacity-0 animate-fade-in-up" style={{ animationDelay: '1400ms' }}>
-              From field documentation to empowered communities
+              {currentT.roadmap.subtitle}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {[
                 {
                   step: '01',
-                  title: 'Digitize',
-                  desc: 'Field officers capture claims, documents, and geospatial data with mobile-first interface',
+                  title: currentT.roadmap.step1.title,
+                  desc: currentT.roadmap.step1.desc,
                   icon: FileCheck,
                   color: 'blue'
                 },
                 {
                   step: '02',
-                  title: 'Validate',
-                  desc: 'AI-powered document analysis, automated compliance checks, and integrity verification',
+                  title: currentT.roadmap.step2.title,
+                  desc: currentT.roadmap.step2.desc,
                   icon: Shield,
                   color: 'green'
                 },
                 {
                   step: '03',
-                  title: 'Map',
-                  desc: 'Advanced GIS mapping with satellite imagery, boundary demarcation, and spatial analytics',
+                  title: currentT.roadmap.step3.title,
+                  desc: currentT.roadmap.step3.desc,
                   icon: Globe,
                   color: 'saffron'
                 },
                 {
                   step: '04',
-                  title: 'Empower',
-                  desc: 'Intelligent decision support, scheme eligibility, and transparent rights delivery',
+                  title: currentT.roadmap.step4.title,
+                  desc: currentT.roadmap.step4.desc,
                   icon: Workflow,
                   color: 'purple'
                 },
@@ -298,7 +326,7 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
                       <item.icon className="w-8 h-8 text-white" />
                     </div>
                     <div className="text-gov-saffron-400 font-bold text-sm mb-2 tracking-wider">
-                      STEP {item.step}
+                      {currentLang === 'en' ? 'STEP' : 'चरण'} {item.step}
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-4">
                       {item.title}
@@ -319,65 +347,63 @@ export function LandingPage({ onLaunch, language }: LandingPageProps) {
           </div>
         </section>
 
-        {/* Trust Badges & Partners */}
         <section className="container mx-auto px-4 py-20">
           <div className="max-w-5xl mx-auto glass-card-landing rounded-3xl p-12 text-center opacity-0 animate-fade-in-up" style={{ animationDelay: '2100ms' }}>
             <h2 className="text-3xl font-bold text-white mb-3">
-              Powered by National Excellence
+              {currentT.partners.title}
             </h2>
-            <p className="text-blue-200 mb-8">Collaborative governance for digital transformation</p>
+            <p className="text-blue-200 mb-8">{currentT.partners.subtitle}</p>
             <div className="flex flex-wrap justify-center items-center gap-8 mt-8">
               <div className="partner-badge group">
                 <Shield className="w-6 h-6 text-gov-saffron-400 mb-2 mx-auto group-hover:scale-110 transition-transform" />
-                <div className="text-white font-semibold">Ministry of Tribal Affairs</div>
+                <div className="text-white font-semibold">{currentT.partners.mota}</div>
               </div>
               <div className="w-px h-12 bg-white/20"></div>
               <div className="partner-badge group">
                 <Award className="w-6 h-6 text-gov-green-400 mb-2 mx-auto group-hover:scale-110 transition-transform" />
-                <div className="text-white font-semibold">Government of India</div>
+                <div className="text-white font-semibold">{currentT.partners.goi}</div>
               </div>
               <div className="w-px h-12 bg-white/20"></div>
               <div className="partner-badge group">
                 <Database className="w-6 h-6 text-blue-400 mb-2 mx-auto group-hover:scale-110 transition-transform" />
-                <div className="text-white font-semibold">National Informatics Centre</div>
+                <div className="text-white font-semibold">{currentT.partners.nic}</div>
               </div>
             </div>
 
             <div className="mt-12 pt-8 border-t border-white/10">
-              <div className="flex items-center justify-center gap-6 text-sm text-blue-200">
+              <div className="flex items-center justify-center gap-6 text-sm text-blue-200 flex-wrap">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-gov-green-400" />
-                  <span>Secure & Compliant</span>
+                  <span>{currentT.partners.badge1}</span>
                 </div>
                 <div className="w-px h-4 bg-white/20"></div>
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-gov-saffron-400" />
-                  <span>Government Grade</span>
+                  <span>{currentT.partners.badge2}</span>
                 </div>
                 <div className="w-px h-4 bg-white/20"></div>
                 <div className="flex items-center gap-2">
                   <Globe className="w-5 h-5 text-blue-400" />
-                  <span>Pan-India Coverage</span>
+                  <span>{currentT.partners.badge3}</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Final CTA */}
         <section className="container mx-auto px-4 py-20 pb-32">
           <div className="max-w-4xl mx-auto text-center opacity-0 animate-fade-in-up" style={{ animationDelay: '2300ms' }}>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Ready to Transform Forest Rights Governance?
+              {currentT.cta.title}
             </h2>
             <p className="text-xl text-blue-200 mb-10">
-              Join the digital revolution in tribal empowerment and sustainable development
+              {currentT.cta.subtitle}
             </p>
             <button
               onClick={onLaunch}
               className="group btn-launch bg-gradient-to-r from-gov-green-500 to-gov-green-600 hover:from-gov-green-600 hover:to-gov-green-700 text-white flex items-center gap-3 text-lg px-12 py-6 rounded-xl font-semibold shadow-2xl hover:shadow-gov-green-500/50 transform hover:scale-105 transition-all duration-300 mx-auto"
             >
-              <span>Enter Van-Atmaa Portal</span>
+              <span>{currentT.cta.button}</span>
               <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>

@@ -23,6 +23,14 @@ function App() {
   const [language, setLanguage] = useState<Language>('en');
   const [userRole, setUserRole] = useState<'uploader' | 'officer' | null>(null);
 
+  React.useEffect(() => {
+    const handleLanguageChange = (event: CustomEvent<Language>) => {
+      setLanguage(event.detail);
+    };
+    window.addEventListener('languageChange', handleLanguageChange as EventListener);
+    return () => window.removeEventListener('languageChange', handleLanguageChange as EventListener);
+  }, []);
+
   const handleLogin = (role: 'uploader' | 'officer') => {
     setUserRole(role);
     setCurrentPage('app');
